@@ -7,15 +7,28 @@ from datetime import datetime, timedelta, date
 import numexpr
 import os.path
 import os
+from pathlib import Path
 import pickle
 import re
 import shutil
+import sys
 from typing import Iterator, List, Dict
 from time import sleep
 
 
 fields_dict_contact = ["firstname", "lastname", "phone", "birthday", "address", "email", "status", "note"]
 fields_dict_note = ["title", "note", "tag"]
+
+
+suff_dict = {'images': ['.jpg', '.jpeg', '.png', '.gif', '.tiff', '.ico', '.bmp', '.webp', '.svg'],
+             'documents': ['.md', '.epub', '.txt', '.docx', '.doc', '.ods', '.odt', '.dotx', '.docm', '.dox',
+                           '.rvg', '.rtf', '.rtfd', '.wpd', '.xls', '.xlsx', '.ppt', '.pptx', '.csv', '.xml'],
+             'archives': ['.tar', '.gz', '.zip', '.rar'],
+             'audio': ['.aac', '.m4a', '.mp3', '.ogg', '.raw', '.wav', '.wma'],
+             'video': ['.avi', '.flv', '.wmv', '.mov', '.mp4', '.webm', '.vob', '.mpg', '.mpeg', '.3gp'],
+             'pdf': ['.pdf'],
+             'html': ['.html', '.htm', '.xhtml'],
+             'exe_msi': ['.exe', '.msi']}
 
 
 def log(name: str = "", obj: str = "", action: str = ""):
@@ -66,6 +79,14 @@ def print_notebook_menu():
     print_green_message('8. save notebook')
     print_green_message('9. load notebook')
     print_green_message('10. exit')
+    print_white_message(42 * "-" + "")
+
+
+def print_filesort_menu():
+    print_red_message("{:^42}".format("Filesort"))
+    print_white_message(42 * "-" + "")
+    print_green_message('1. run filesort')
+    print_green_message('2. exit')
     print_white_message(42 * "-" + "")
 
 
@@ -1068,286 +1089,121 @@ def notebook():
             notebot.notebook.save(file_name)
 
 
-def normalize(name):
+class FileSort:
+    @staticmethod
+    def normalize(name: str, suffix: str) -> str:
+        cyrillic = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
+        translation = (
+            "a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",
+            "f", "h", "ts", "ch", "sh", "sch", "", "y", "", "e", "yu", "u", "ja")
 
-    """
-    The normalize function takes a string as an argument and returns the same string with all Cyrillic characters
-    replaced by their Latin equivalents. The function also replaces spaces, punctuation marks, and other symbols with
-    underscores.
+        trans = {}
+        for c, l in zip(cyrillic, translation):
+            trans[ord(c)] = l
+            trans[ord(c.upper())] = l.upper()
+        new_name = name.translate(trans)
+        new_name = re.sub(r'\W', '_', new_name)
+        return new_name + suffix
 
-    :param name: Pass the name of the file to be normalized
-    :return: A string that is the same as the input
-    """
+    @staticmethod
+    def unpack_archive(path: Path):
+        if path.is_dir():
+            for item in path.iterdir():
+                if item.name == 'archives':
+                    for arch in item.iterdir():
+                        name = item / arch.stem
+                        name.mkdir(parents=True, exist_ok=True)
+                        try:
+                            shutil.unpack_archive(arch, name)
+                            print_white_message(f"unpack archive: {arch}")
+                        except shutil.ReadError:
+                            continue
 
-    CYRILLIC_SYMBOLS = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяєіїґ!#$%&()*+,-/:;<>=?@[]^~{|}'\\`. "
-    TRANSLATION = (
-        "a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",
-        "f", "h", "ts", "ch", "sh", "sch", "", "y", "", "e", "yu", "ya", "je", "i", "ji", "g",
-        "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_",
-        "_",
-        "_", "_", "_", "_", "_", "_", "_", "_", "_")
-    TRANS = {}
-    CYRILLIC = tuple(CYRILLIC_SYMBOLS)
-
-    for c, l in zip(CYRILLIC, TRANSLATION):
-        TRANS[ord(c)] = l
-        TRANS[ord(c.upper())] = l.upper()
-
-    if re.search(r'\..{2,5}$', name):
-        s_res = re.search(r'\..{2,5}$', name)
-        suffix = s_res.group()
-        name = name.removesuffix(suffix)
-        name = name.translate(TRANS)
-        name += suffix
-    else:
-        name = name.translate(TRANS)
-    return name
+    @staticmethod
+    def print_result_sort(path: Path):
+        if path.is_dir():
+            for item in path.iterdir():
+                if item.is_dir():
+                    result = [f for f in os.listdir(item)]
+                    print_white_message(f"files in category {item.name}: {', '.join(result)}")
+                else:
+                    continue
 
 
-def move_file(files_pattern, path, el, dst):
+    def sort_func(self, path: Path):
+        try:
+            for item in path.iterdir():
+                if item.is_dir():
+                    self.sort_func(item)
+                    if not list(item.iterdir()):
+                        item.rmdir()
+                        print_white_message(f"directory {item} removed")
+                else:
+                    try:
+                        new_name = self.normalize(item.stem, item.suffix)
+                        for key, value in suff_dict.items():
+                            if item.suffix in value:
+                                target_dir = path / key
+                                target_dir.mkdir(exist_ok=True)
+                                shutil.move(item, target_dir / new_name)
+                                print_white_message(f"file {new_name} has been successfully moved")
+                                break
+                        else:
+                            target_dir = path / 'unknown'
+                            target_dir.mkdir(exist_ok=True)
+                            shutil.move(item, target_dir / new_name)
+                            print_white_message(f"file {new_name} has been successfully moved")
 
-    """
-    The move_file function takes in three arguments:
-        1. files_pattern - a list of regex patterns to match against the file names
-        2. path - the directory where all the files are located
-        3. dst - destination folder for matched files
+                    except Exception as e:
+                        print(f"error while processing {item}: {e}")
 
-    :param files_pattern: Search for the file in the directory
-    :param path: Specify the path of the directory where we want to search for files
-    :param el: Represent the file name in the path
-    :param dst: Specify the destination path
-    :return: Nothing
-    """
+        except FileExistsError as error:
+            print(error)
 
-    for doc_pattern in files_pattern:
-        if re.search(doc_pattern, el):
-            new_el = normalize(el)
-            src = os.path.join(path, el)
-            dst = os.path.join(dst, new_el)
 
+class BotFilesort:
+
+    def __init__(self):
+        self.filesort = FileSort()
+
+    def handle(self):
+        while True:
             try:
-                shutil.copy(src, dst)
-                print(Fore.WHITE + "  file is copied successfully", el)
-                os.remove(src)
-                print(Fore.WHITE + "  file is deleted successfully", el)
+                print_green_message("enter the path to sort")
+                path = Path(input(Fore.BLUE + ">>>:"))
+                if path.exists():
+                    self.filesort.sort_func(path)
+                    self.filesort.unpack_archive(path)
+                    self.filesort.print_result_sort(path)
+                    print_yellow_message('sorting completed successfully')
+                    input(Fore.MAGENTA + "press Enter to continue")
+                    break
 
-            except shutil.SameFileError:
-                print(Fore.RED + "  source and destination represents the same file", el)
-                os.remove(src)
-                print(Fore.RED + "  file is deleted successfully", el)
-
-            except PermissionError:
-                print(Fore.RED + "  permission denied", el)
+                else:
+                    print_red_message(f'path {path} is not found, try again')
+                    log(f'path {path} is not found, try again')
+                    input(Fore.MAGENTA + "press Enter to continue")
+                    continue
 
             except KeyboardInterrupt:
-                print(Fore.RED + "  error occurred while copying file", el)
-
-
-def move_unknown_file(file_pattern, path, el, dst):
-
-    """
-    The move_unknown_file function takes in three arguments:
-        1. files_pattern - a list of regular expressions that match the file types we want to keep
-        2. path - the directory where all our files are located
-        3. el - an element from os.listdir(path) which is a string representing one of the files in path
-            (this will be used as part of our source and destination paths)
-
-    :param file_pattern: Determine whether the file is a document or not
-    :param path: Specify the path to the folder where we want to move files from
-    :param el: Get the name of the file
-    :param dst: Specify the destination folder
-    :return: Nothing
-    """
-
-    for doc_pattern in file_pattern:
-        if re.search(doc_pattern, el) is None:
-            new_el = normalize(el)
-            src = os.path.join(path, el)
-            dst = os.path.join(dst, new_el)
-            try:
-                shutil.copy(src, dst)
-                os.remove(src)
-                print(Fore.WHITE + "  file is copied successfully")
-            except shutil.SameFileError:
-                print(Fore.RED + "  source and destination represents the same file")
-            except PermissionError:
-                print(Fore.RED + "  permission denied")
-            except OSError:
-                pass
-
-
-def rec_sort(path):
-
-    """
-    The move_unknown_file function takes in three arguments:
-     1. path - the directory where all our files are located
-    :param path: Specify the directory where all our files are located
-    :return: Nothing
-    """
-
-    new_folders = ['images',
-                   'documents',
-                   'audio',
-                   'video',
-                   'archives',
-                   'programs',
-                   'unknown']
-
-    for el in new_folders:
-        try:
-            os.mkdir(path + '\\' + el)
-        except FileExistsError:
-            print(Fore.RED + f"  file already exists: {el}")
-        except OSError:
-            print(Fore.RED + f"  error creating folder: {el}")
-
-    dst_doc = os.path.join(path, 'documents')
-    dst_img = os.path.join(path, 'images')
-    dst_aud = os.path.join(path, 'audio')
-    dst_vid = os.path.join(path, 'video')
-    dst_arh = os.path.join(path, 'archives')
-    dst_prg = os.path.join(path, 'programs')
-    dst_un = os.path.join(path, 'unknown')
-    el_list = os.listdir(path)
-
-    for folder in new_folders:
-        for el in el_list:
-            if folder == el:
-                el_list.remove(el)
-    for el in el_list:
-        image_files = ['\.jpeg$', '\.png$', '\.jpg$', '\.svg$', '\.tiff$', '\.tif$', '\.bmp$', '\.gif$']
-        video_files = ['\.avi$', '\.mp4$', '\.mov$', '\.mkv$', '\.3gp$', '\.3g2$', '\.mpg$', '\.mpeg$']
-        doc_files = ['\.doc$', '\.docx$', '\.txt$', '\.pdf$',
-                     '\.xls$', '\.xlsx$', '\.pptx$', '\.mpp$', '\.html$', '\.csv$', '\.bin$', '\.rtf$']
-        audio_files = ['\.mp3$', '\.ogg$', '\.wav$', '\.amr$', '\.mid$', '\.midi$', '\.mpa$', '\.wma$']
-        arch_files = ['\.zip$', '\.gz$', '\.tar$', '\.7z$', '\.rar$']
-        program_files = ['\.exe$', '\.bat$', '\.apk$']
-        unknown_files = []
-        unknown_files.extend(image_files)
-        unknown_files.extend(video_files)
-        unknown_files.extend(doc_files)
-        unknown_files.extend(audio_files)
-        unknown_files.extend(arch_files)
-        unknown_files.extend(program_files)
-
-        if not os.path.isdir(path + '\\' + el):
-            move_file(image_files, path, el, dst_img)
-            move_file(video_files, path, el, dst_vid)
-            move_file(doc_files, path, el, dst_doc)
-            move_file(audio_files, path, el, dst_aud)
-            move_file(arch_files, path, el, dst_arh)
-            move_file(program_files, path, el, dst_prg)
-            move_unknown_file(unknown_files, path, el, dst_un)
-        elif os.path.isdir(path + '\\' + el):
-            rec_sort(path + '\\' + el)
-
-
-def delete_empty_folders(path):
-
-    """
-    The delete_empty_folders function takes in one argument:
-     1. path - the directory where all our files are located
-
-    :param path: Specify the directory where all our files are located
-    :return: Nothing
-    """
-
-    for el in os.listdir(path):
-        if os.path.isdir(path + '\\' + el):
-            try:
-                os.rmdir(path + '\\' + el)
-                print(Fore.WHITE + "  directory '%s' has been removed successfully" % (path + '\\' + el))
-                log("directory '%s' has been removed successfully" % (path + '\\' + el))
-                delete_empty_folders(path)
-            except OSError:
-                log("directory '%s' can not be removed" % (path + '\\' + el))
-                delete_empty_folders(path + '\\' + el)
-
-
-def about_filesort():
-
-    """
-    The function print about_filesort.
-
-    :return:  about_filesort
-    """
-
-    print(Fore.RED + f" {' ' * 18}CLI ASSISTANT BOT")
-    print(Fore.WHITE + ' ********************* DESCRIPTION ********************\n',
-          Fore.GREEN + ' the script helps to sort files in folders according\n',
-                       ' to popular file types as a result, files will be \n',
-                       ' moved into folders: <images>, <documents>,\n',
-                       ' <audio>, <video>, <archives>, <programs>, <unknown>\n',
-                       ' if the folder does\'t contain files of some file\n',
-                       ' type then a new folder for this type will not create\n',
-          Fore.WHITE + '*******************************************************\n')
-
-
-def menu_filesort():
-    """
-    The function print menu_filesort.
-
-    :return:  menu_filesort
-    """
-
-    print(Fore.RED + f" {' ' * 4}CLI ASSISTANT BOT")
-    print(Fore.WHITE + ' ****** FILE SORT ******\n',
-          Fore.GREEN + ' 1. about\n',
-                       ' 2. run file sort\n',
-                       ' 3. exit\n',
-          Fore.WHITE + '************************\n')
+                input(Fore.MAGENTA + "press Enter to continue")
 
 
 def filesort():
-
-    """
-    The filesort function is a CLI menu that allows the user to sort files in a directory.
-    The user can choose from three options:
-        1) About - displays information about the function and how it works.
-        2) Sort - sorts all files in a given directory into subdirectories based on file type.
-            The subdirectories are created if they do not already exist, and empty directories
-            are deleted after sorting is complete.
-            If an error occurs during sorting, the program will display an error message and return to main menu.
-
-    :return: The filesort function
-    """
-
     init()
+    botfilesort = BotFilesort()
     while True:
         os.system('cls')
-        menu_filesort()
-        print(Fore.GREEN + '  your choose(number)')
-        user_input = input(Fore.BLUE + '  your choose(number)>>>: ')
+        print_filesort_menu()
+        print_white_message("your choose(number)")
+        user_input = input(Fore.BLUE + ">>>:")
 
-        if user_input == '1':
-            os.system('cls')
-            about_filesort()
-            input(Fore.YELLOW + '  press Enter to continue')
+        if user_input == "1":
+            botfilesort.handle()
 
-        elif user_input == '2':
-            os.system('cls')
-            print(Fore.RED + f" {' ' * 7}CLI ASSISTANT BOT")
-            print(Fore.WHITE + ' ********** FILE SORT **********')
-            print(Fore.GREEN + '  input the file path')
-            path = input(Fore.BLUE + '  >>>: ')
-            try:
-                if os.path.exists(path):
-                    rec_sort(path)
-                    delete_empty_folders(path)
-                    print(Fore.MAGENTA + '\n  sorting completed successfully')
-                    input(Fore.YELLOW + '\n  press Enter to continue')
-                else:
-                    print(Fore.RED + f'\n  path {path} is not found, try again')
-                    log(f'path {path} is not found, try again')
-                    input(Fore.YELLOW + '\n  press Enter to continue')
-
-            except KeyboardInterrupt:
-                input(Fore.YELLOW + '\n  press Enter to continue')
-                continue
-
-        elif user_input == '3':
+        elif user_input == "2":
             print_goodbye()
-            return 'exit'
+            break
 
 
 def calculate():
