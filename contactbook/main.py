@@ -70,7 +70,7 @@ def print_notebook_menu():
 
 
 def print_calculator_menu():
-    print_red_message("{:^42}".format("Notebook"))
+    print_red_message("{:^42}".format("Calculator"))
     print_white_message(42 * "-" + "")
     print_green_message('1. run calculator')
     print_green_message('2. exit')
