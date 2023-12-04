@@ -2,7 +2,7 @@ from setuptools import setup, find_namespace_packages
 
 setup(
     name='contactbook',
-    version='0.0.2',
+    version='1.0.0',
     description='contactbook + notebook + filesort + calculator',
     url='https://github.com/VadimTrubay/contactbook',
     author='TrubayVadim',
