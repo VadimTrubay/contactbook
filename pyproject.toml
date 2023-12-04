@@ -1,0 +1,18 @@
+[project]
+name = "contactbook"
+version = "0.0.1"
+authors = [
+  { name="VadimTrubay", email="vadnetvadnet@ukr.net" },
+]
+description = "contactbook application for use save contact, note and sorting your file"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/VadimTrubay/contactbook"
+Issues = "https://github.com/VadimTrubay/contactbook/issues"
