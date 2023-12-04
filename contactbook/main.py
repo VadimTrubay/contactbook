@@ -27,6 +27,7 @@ suff_dict = {'images': ['.jpg', '.jpeg', '.png', '.gif', '.tiff', '.ico', '.bmp'
              'audio': ['.aac', '.m4a', '.mp3', '.ogg', '.raw', '.wav', '.wma'],
              'video': ['.avi', '.flv', '.wmv', '.mov', '.mp4', '.webm', '.vob', '.mpg', '.mpeg', '.3gp'],
              'pdf': ['.pdf'],
+             'python': ['.py'],
              'html': ['.html', '.htm', '.xhtml'],
              'exe_msi': ['.exe', '.msi']}
 
@@ -280,7 +281,7 @@ class Contactbook(UserList):
     @staticmethod
     def __get_current_week() -> List:
         now = datetime.now()
-        current_weekday = now.weekday() + 1
+        current_weekday = now.weekday()
         if current_weekday < 5:
             week_start = now - timedelta(days=0 + current_weekday)
         else:
@@ -295,13 +296,16 @@ class Contactbook(UserList):
         for contact in self.data:
             if contact["birthday"]:
                 birthday = contact["birthday"]
-                birth_day = datetime.strptime(birthday, "%d.%m.%Y")
+                try:
+                    birth_day = datetime.strptime(birthday, "%d.%m.%Y")
+                except:
+                    continue
                 birth_day = date(birth_day.year, birth_day.month, birth_day.day)
                 current_date = date.today()
                 new_birthday = birth_day.replace(year=current_date.year)
                 birthday_weekday = new_birthday.weekday() + 1
-                if self.__get_current_week()[0] <= new_birthday < self.__get_current_week()[1]:
-                    if birthday_weekday < 5:
+                if self.__get_current_week()[0] <= new_birthday <= self.__get_current_week()[1]:
+                    if birthday_weekday <= 5:
                         congratulate[WEEKDAYS[birthday_weekday]].append(contact["firstname"]  + " " + contact["lastname"])
                     else:
                         congratulate["monday"].append(contact["firstname"] + " " + contact["lastname"])
@@ -313,7 +317,11 @@ class Contactbook(UserList):
         for contact in self.data:
             if firstname == contact["firstname"] and lastname == contact["lastname"]:
                 birthday = contact["birthday"]
-                birth_day = datetime.strptime(birthday, '%d.%m.%Y')
+                try:
+                    birth_day = datetime.strptime(birthday, '%d.%m.%Y')
+                except:
+                    print_red_message("not a valid birthday date for contact")
+                    break
                 birth_day = date(birth_day.year, birth_day.month, birth_day.day)
                 current_date = date.today()
                 user_date = birth_day.replace(year=current_date.year)
@@ -445,7 +453,7 @@ class BirthdayContactbook(FieldContactbook):
                 print_green_message("birthday(dd.mm.YYYY)")
                 self.value = input(Fore.BLUE + ">>>:")
             try:
-                if re.match(r'^\d{2}.\d{2}.\d{4}$', self.value) or self.value == "":
+                if re.match(r'^(0[1-9]|[12][0-9]|3[01])[.](0[1-9]|1[012])[.](19|20)[0-9]{2}$', self.value) or self.value == "":
                     break
                 else:
                     raise ValueError
@@ -651,7 +659,6 @@ class BotContactbook:
                 congratulate = self.contactbook.congratulate()
                 print_congratulate(congratulate)
 
-            # to be edited!!!
             elif command == "6":
                 all_contacts = []
                 for contact in self.contactbook:
@@ -663,7 +670,8 @@ class BotContactbook:
                 lastname = input(Fore.BLUE + ">>>:")
                 if firstname + " " + lastname in all_contacts:
                     days = self.contactbook.days_to_birthday(firstname, lastname)
-                    print_yellow_message(f"{days} days left until {firstname} {lastname}'s birthday")
+                    if days:
+                        print_yellow_message(f"{days} days left until {firstname} {lastname}'s birthday")
                 else:
                     log("contact not found")
                     print_red_message("contact not found")
