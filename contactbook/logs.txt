@@ -1,128 +1,16 @@
-[2023-12-06] [23:21:04] - contactbook contactbook_save saved
-[2023-12-06] [23:21:04] - contactbook contactbook_save saved
-[2023-12-06] [23:21:07] - contactbook empty
-[2023-12-06] [23:21:11] - contactbook empty
-[2023-12-06] [23:21:20] - incorrect firstname - acvt[
-[2023-12-06] [23:21:31] - incorrect firstname - \4
-[2023-12-06] [23:21:36] - please enter a name
-[2023-12-06] [23:21:40] - contactbook contactbook_save saved
-[2023-12-06] [23:21:48] - contactbook empty
-[2023-12-06] [23:22:09] - contact cd ds not found
-[2023-12-06] [23:22:20] - contact   not found
-[2023-12-06] [23:22:22] - contactbook contactbook_save saved
-[2023-12-06] [23:28:16] - contactbook contactbook_save loaded
-[2023-12-06] [23:28:16] - contactbook contactbook_save loaded
-[2023-12-06] [23:28:17] - contactbook empty
-[2023-12-06] [23:28:24] - contact q q added
-[2023-12-06] [23:28:25] - contactbook contactbook_save saved
-[2023-12-06] [23:28:33] - incorrect number of page, try again
-[2023-12-06] [23:29:18] - contactbook contactbook_save loaded
-[2023-12-06] [23:29:18] - contactbook contactbook_save loaded
-[2023-12-06] [23:29:23] - contact a a added
-[2023-12-06] [23:29:23] - contactbook contactbook_save saved
-[2023-12-06] [23:29:30] - contact z z added
-[2023-12-06] [23:29:31] - contactbook contactbook_save saved
-[2023-12-06] [23:30:23] - contactbook cleared
-[2023-12-06] [23:30:27] - contactbook contactbook_save saved
-[2023-12-06] [23:34:51] - contactbook contactbook_save loaded
-[2023-12-06] [23:34:51] - contactbook contactbook_save loaded
-[2023-12-06] [23:34:53] - contactbook empty
-[2023-12-06] [23:35:01] - contactbook empty
-[2023-12-06] [23:40:52] - contactbook contactbook_save loaded
-[2023-12-06] [23:40:52] - contactbook contactbook_save loaded
-[2023-12-06] [23:40:54] - contactbook empty
-[2023-12-06] [23:40:57] - contactbook empty
-[2023-12-06] [23:41:00] - contactbook empty
-[2023-12-06] [23:41:01] - contactbook contactbook_save saved
-[2023-12-06] [23:41:02] - contactbook empty
-[2023-12-06] [23:41:05] - contactbook empty
-[2023-12-06] [23:41:07] - contactbook empty
-[2023-12-06] [23:41:08] - contactbook contactbook_save saved
-[2023-12-06] [23:41:10] - contactbook empty
-[2023-12-06] [23:41:12] - contactbook contactbook_save saved
-[2023-12-06] [23:41:59] - contactbook empty
-[2023-12-06] [23:42:05] - contact q q added
-[2023-12-06] [23:42:06] - contactbook contactbook_save saved
-[2023-12-06] [23:42:23] - invalid input, error: 'e', try again
-[2023-12-06] [23:51:09] - contactbook contactbook_save loaded
-[2023-12-06] [23:51:09] - contactbook contactbook_save loaded
-[2023-12-06] [23:51:13] - please enter a parameter
-[2023-12-06] [23:53:03] - contactbook contactbook_save loaded
-[2023-12-06] [23:53:03] - contactbook contactbook_save loaded
-[2023-12-06] [23:53:10] - contact r r not found
-[2023-12-06] [23:53:16] - contactbook contactbook_save saved
-[2023-12-06] [23:53:20] - contact t  not found
-[2023-12-06] [23:55:37] - contactbook contactbook_save loaded
-[2023-12-06] [23:55:37] - contactbook contactbook_save loaded
-[2023-12-06] [23:58:34] - contactbook contactbook_save loaded
-[2023-12-06] [23:58:34] - contactbook contactbook_save loaded
-[2023-12-06] [23:59:07] - contactbook contactbook_save loaded
-[2023-12-06] [23:59:07] - contactbook contactbook_save loaded
-[2023-12-06] [23:59:57] - contactbook contactbook_save loaded
-[2023-12-06] [23:59:57] - contactbook contactbook_save loaded
-[2023-12-07] [00:09:20] - contactbook contactbook_save loaded
-[2023-12-07] [00:09:20] - contactbook contactbook_save loaded
-[2023-12-07] [00:09:45] - contact w e added
-[2023-12-07] [00:09:46] - contactbook contactbook_save saved
-[2023-12-07] [00:11:17] - contactbook contactbook_save loaded
-[2023-12-07] [00:11:17] - contactbook contactbook_save loaded
-[2023-12-07] [00:11:37] - contact w e deleted
-[2023-12-07] [00:11:38] - contactbook contactbook_save saved
-[2023-12-07] [00:14:07] - contactbook contactbook_save loaded
-[2023-12-07] [00:14:07] - contactbook contactbook_save loaded
-[2023-12-07] [00:18:58] - contactbook contactbook_save loaded
-[2023-12-07] [00:18:58] - contactbook contactbook_save loaded
-[2023-12-07] [00:21:07] - contactbook contactbook_save loaded
-[2023-12-07] [00:21:07] - contactbook contactbook_save loaded
-[2023-12-07] [00:21:33] - incorrect firstname - ö
-[2023-12-07] [00:21:33] - incorrect firstname - ö
-[2023-12-07] [00:21:50] - contact w w added
-[2023-12-07] [00:21:51] - contactbook contactbook_save saved
-[2023-12-07] [00:22:39] - contactbook contactbook_save loaded
-[2023-12-07] [00:22:39] - contactbook contactbook_save loaded
-[2023-12-07] [00:22:49] - contactbook cleared
-[2023-12-07] [00:22:50] - contactbook contactbook_save saved
-[2023-12-07] [00:22:53] - contactbook empty
-[2023-12-07] [00:22:55] - contactbook contactbook_save saved
-[2023-12-07] [00:22:56] - contactbook empty
-[2023-12-07] [00:23:12] - contact q q added
-[2023-12-07] [00:23:13] - contactbook contactbook_save saved
-[2023-12-07] [00:24:44] - contact t t not found
-[2023-12-07] [00:39:55] - contactbook 'contactbook_save' loaded
-[2023-12-07] [00:40:20] - please enter a valid parameter
-[2023-12-07] [00:41:01] - contact 'q q' edited
-[2023-12-07] [00:41:02] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:41:19] - contact ' ' not found
-[2023-12-07] [00:41:19] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:41:37] - contact 'q q' edited
-[2023-12-07] [00:41:52] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:41:54] - invalid input, error: 'int' object is not iterable, try again
-[2023-12-07] [00:47:15] - contactbook 'contactbook_save' loaded
-[2023-12-07] [00:47:19] - invalid input, error: 'int' object is not iterable, try again
-[2023-12-07] [00:47:33] - contact 'q q' deleted
-[2023-12-07] [00:47:34] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:47:38] - contactbook empty
-[2023-12-07] [00:47:39] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:47:41] - contactbook empty
-[2023-12-07] [00:47:51] - contact 'q q' added
-[2023-12-07] [00:47:52] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:48:01] - contact ' ' not found
-[2023-12-07] [00:48:02] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:48:08] - contact 'q d' not found
-[2023-12-07] [00:48:09] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:48:23] - please enter a valid parameter
-[2023-12-07] [00:48:26] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:48:38] - contact 'q q' edited
-[2023-12-07] [00:48:39] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:48:58] - contact 'q q' edited
-[2023-12-07] [00:48:59] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:49:39] - contact 'q q' edited
-[2023-12-07] [00:49:40] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:53:35] - incorrect firstname - ''
-[2023-12-07] [00:53:37] - incorrect firstname - ''
-[2023-12-07] [00:53:42] - please enter a name
-[2023-12-07] [00:53:46] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:54:25] - contact 'wd dc wed rfg' added
-[2023-12-07] [00:54:33] - contactbook 'contactbook_save' saved
-[2023-12-07] [00:55:41] - contact 'q q' edited
-[2023-12-07] [00:55:42] - contactbook 'contactbook_save' saved
+[2023-12-07] [09:15:13] - contactbook 'contactbook_save' saved
+[2023-12-07] [09:15:14] - contactbook empty
+[2023-12-07] [09:15:20] - contact 'q q' added
+[2023-12-07] [09:15:21] - contactbook 'contactbook_save' saved
+[2023-12-07] [09:15:36] - no matches found for - 'n' pattern
+[2023-12-07] [09:15:58] - contactbook 'contactbook_save' saved
+[2023-12-07] [09:16:06] - contactbook 'contactbook_save' loaded
+[2023-12-07] [09:16:35] - contactbook 'contactbook_save' loaded
+[2023-12-07] [09:16:35] - contactbook 'contactbook_save' loaded
+[2023-12-07] [09:21:28] - contactbook 'contactbook_save' loaded
+[2023-12-07] [09:21:42] - contactbook 'contactbook_save' loaded
+[2023-12-07] [09:22:02] - contactbook 'contactbook_save' saved
+[2023-12-07] [09:22:33] - no matches found for - '08.12.1985' pattern
+[2023-12-07] [09:22:57] - contact 'q q' edited
+[2023-12-07] [09:22:58] - contactbook 'contactbook_save' saved
+[2023-12-07] [09:23:08] - 1 days left until 'q q''s birthday

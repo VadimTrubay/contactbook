@@ -17,8 +17,8 @@ from typing import Iterator, List, Dict
 from time import sleep
 
 
-fields_dict_contact = ["firstname", "lastname", "phone", "birthday", "address", "email", "status", "note"]
-fields_dict_note = ["title", "note", "tag"]
+FIELDS_CONTACT = ["firstname", "lastname", "phone", "birthday", "address", "email", "status", "note"]
+FIELDS_NOTE = ["title", "note", "tag"]
 
 
 suff_dict = {'images': ['.jpg', '.jpeg', '.png', '.gif', '.tiff', '.ico', '.bmp', '.webp', '.svg'],
@@ -41,7 +41,7 @@ suff_dict = {'images': ['.jpg', '.jpeg', '.png', '.gif', '.tiff', '.ico', '.bmp'
              }
 
 
-def log(message):
+def log(message: str):
     current_time = datetime.strftime(datetime.now(), "[%Y-%m-%d] [%H:%M:%S]")
     full_message = f"{current_time} - {message}"
     with open("logs.txt", "a") as file:
@@ -132,9 +132,9 @@ def print_record(value: Dict):
     fields_dict = 0
     print_white_message("-" * 25)
     if len(value) == 8:
-        fields_dict = fields_dict_contact
+        fields_dict = FIELDS_CONTACT
     if len(value) == 3:
-        fields_dict = fields_dict_note
+        fields_dict = FIELDS_NOTE
     for field in fields_dict:
         print_green_message(f"{field}: ", end="")
         print_white_message(f"{value.get(field)}")
@@ -355,8 +355,6 @@ class Contactbook(UserList):
     def save(self, file_name: str):
         with open(f"{file_name}.bin", "wb") as file:
             pickle.dump(self.data, file)
-        print_red_message(f"contactbook '{file_name}' saved")
-        log(f"contactbook '{file_name}' saved")
 
 
     def load(self, file_name: str):
@@ -364,11 +362,6 @@ class Contactbook(UserList):
         if empty_ness.st_size != 0:
             with open(f"{file_name}.bin", "rb") as file:
                 self.data = pickle.load(file)
-            print_red_message(f"contactbook '{file_name}' loaded")
-            log(f"contactbook '{file_name}' loaded")
-        else:
-            print_red_message(f"contactbook '{file_name}' created")
-            log(f"contactbook '{file_name}' created")
         return self.data
 
 
@@ -795,8 +788,12 @@ def contactbook():
     contactbot = BotContactbook()
     if os.path.exists(f"{file_name}.bin"):
         contactbot.contactbook.load(file_name)
+        print_red_message(f"contactbook '{file_name}' loaded")
+        log(f"contactbook '{file_name}' loaded")
     else:
         contactbot.contactbook.save(file_name)
+        print_red_message(f"contactbook '{file_name}' saved")
+        log(f"contactbook '{file_name}' saved")
 
 
     while True:
@@ -806,6 +803,8 @@ def contactbook():
         user_input = input(Fore.BLUE + ">>>: ")
         if user_input == "11":
             contactbot.contactbook.save(file_name)
+            print_red_message(f"contactbook '{file_name}' saved")
+            log(f"contactbook '{file_name}' saved")
             print_goodbye()
             break
 
@@ -814,6 +813,8 @@ def contactbook():
 
         if user_input in ["2", "4", "7", "8"]:
             contactbot.contactbook.save(file_name)
+            print_red_message(f"contactbook '{file_name}' saved")
+            log(f"contactbook '{file_name}' saved")
 
 
 class RecordNotebook:
