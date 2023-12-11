@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name='contactbook',
-    version='1.1.3',
+    version='1.1.4',
     description='contactbook + notebook + filesort + calculator',
     long_description=long_description,
     long_description_content_type='text/markdown',
