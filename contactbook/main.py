@@ -558,7 +558,6 @@ class BotContactbook:
 
 
     def handle(self, command):
-
         try:
             if command == "1":
                 while True:
@@ -884,7 +883,7 @@ class NoteBook(UserList):
     def delete(self, note: str):
         for key in self.data:
             if key["title"] == note:
-                print_green_message("are you sure for delete note? (y/n)")
+                print_yellow_message(f"are you sure for delete '{firstname} {lastname}' note? (y/n)")
                 del_note = input(Fore.BLUE + ">>>: ")
                 if del_note == "y":
                     self.data.remove(key)
@@ -898,19 +897,13 @@ class NoteBook(UserList):
     def save(self, file_name: str):
         with open(f"{file_name}.bin", 'wb') as file:
             pickle.dump(self.data, file)
-        print_red_message("notebook saved")
-        log("notebook saved")
+
 
     def load(self, file_name: str):
         empty_ness = os.stat(f"{file_name}.bin")
         if empty_ness.st_size != 0:
             with open(f"{file_name}.bin", "rb") as file:
                 self.data = pickle.load(file)
-            print_red_message("notebook loaded")
-            log("notebook loaded")
-        else:
-            print_red_message("notebook created")
-            log("notebook created")
         return self.data
 
 
@@ -922,9 +915,7 @@ class FieldNotebook(ABC):
 
 
 class TitleNotebook(FieldNotebook):
-
     def __init__(self, value=""):
-
         while True:
             if value:
                 self.value = value
@@ -960,8 +951,8 @@ class NoteNotebook(FieldNotebook):
                 else:
                     raise ValueError
             except ValueError:
-                log('incorrect value')
-                print_red_message('incorrect value, try again')
+                log(f"incorrect note - {self.value}")
+                print_red_message(f"incorrect note - {self.value}, try again")
 
     def __getitem__(self):
         return self.value
@@ -982,8 +973,8 @@ class TagNotebook(FieldNotebook):
                 else:
                     raise ValueError
             except ValueError:
-                log("incorrect value")
-                print_red_message("incorrect value, try again")
+                log(f"incorrect tag - {self.value}")
+                print_red_message(f"incorrect tag - {self.value}, try again")
 
 
     def __getitem__(self):
@@ -1000,19 +991,22 @@ class BotNotebook:
         try:
             if command == "1":
                 while True:
-                    try:
-                        print_green_message("number of note per page")
-                        n = int(input(Fore.BLUE + ">>>:"))
-                    except ValueError:
-                        print_red_message("incorrect number of note, try again")
-                        continue
-                    else:
-                        if self.notebook:
+                    if self.notebook:
+                        try:
+                            print_green_message("number of note per page")
+                            n = int(input(Fore.BLUE + ">>>:"))
+                        except ValueError:
+                            print_red_message(f"incorrect number of note, try again")
+                            log(f"incorrect number of page, try again")
+                            continue
+
+                        else:
                             get_page(n, self.notebook)
                             break
-                        else:
-                            print_red_message("notebook empty")
-                            break
+                    else:
+                        print_red_message(f"notebook empty")
+                        log(f"notebook empty")
+                        break
 
             elif command == "2":
                 title = TitleNotebook().value.strip().lower()
@@ -1021,108 +1015,137 @@ class BotNotebook:
                     if self.notebook:
                         for item in self.notebook:
                             if title == item['title']:
-                                print_red_message("this title already exists\n" + "  enter command to edit")
-                                log("title", f"{title}", "already exists")
+                                print_red_message(f"title '{title}' already exists")
+                                log(f"title '{title}' already exists")
                                 break
                         else:
                             note = NoteNotebook().value.strip().lower()
                             tag = TagNotebook().value.strip().lower()
                             record = RecordNotebook(title, note, tag)
                             self.notebook.add(record)
-                            print_red_message("title", f"{title}", "added")
-                            log("title", f"{title}", "added")
+                            print_red_message(f"title '{title}' added")
+                            log(f"title '{title}' added")
                     else:
                         note = NoteNotebook().value.strip().lower()
                         tag = TagNotebook().value.strip().lower()
                         record = RecordNotebook(title, note, tag)
                         self.notebook.add(record)
-                        print_red_message("title", f"{title}", "added")
-                        log("title", f"{title}", "added")
+                        print_red_message(f"title '{title}' added")
+                        log(f"title '{title}' added")
 
                 else:
-                    print_red_message("please enter a title")
+                    print_red_message(f"please enter a title")
+                    log(f"please enter a title")
 
 
             elif command == "3":
-                print_green_message("enter the title to find note")
-                title = input(Fore.BLUE + ">>>:")
-                if title:
-                    result = self.notebook.find_note_by_title(title)
-                    if result:
-                        for res in result:
-                            print_record(res)
+                if self.notebook:
+                    print_green_message("enter the title to find note")
+                    title = input(Fore.BLUE + ">>>:")
+                    if title:
+                        result = self.notebook.find_note_by_title(title)
+                        if result:
+                            for res in result:
+                                print_record(res)
+                        else:
+                            print_red_message(f"not found - {title} title")
+                            log(f"not found - {title} title")
                     else:
-                        print_red_message("not found title")
+                        print_red_message("please enter a title")
+                        log(f"not found - {title} title")
                 else:
-                    print_red_message("please enter a word")
+                    print_red_message(f"notebook empty")
+                    log(f"notebook empty")
 
 
             elif command == "4":
-                print_green_message("enter the tag to find note")
-                tag = input(Fore.BLUE + ">>>:")
-                if tag:
-                    result = self.notebook.find_note_by_tag(tag)
-                    if result:
-                        for tag in result:
-                            print_record(tag)
+                if self.notebook:
+                    print_green_message("enter the tag to find note")
+                    tag = input(Fore.BLUE + ">>>:")
+                    if tag:
+                        result = self.notebook.find_note_by_tag(tag)
+                        if result:
+                            for tag in result:
+                                print_record(tag)
+                        else:
+                            print_red_message(f"not found - {tag} tag")
+                            log(f"not found - {tag} title")
                     else:
-                        print_red_message("not found title")
+                        print_red_message("please enter a tag")
+                        log(f"not found - {tag} title")
                 else:
-                    print_red_message("please enter a tag")
+                    print_red_message(f"notebook empty")
+                    log(f"notebook empty")
 
 
             elif command == "5":
-                all_titles = []
-                for key in self.notebook:
-                    all_titles.append(key['title'])
-                print_all_titles(all_titles)
-                print_green_message("enter the title")
-                title = input(Fore.BLUE + ">>>:")
-                if title in all_titles:
-                    print_green_message("enter the parameter to edit")
-                    parameter = input(Fore.BLUE + ">>>:")
-                    print_green_message("enter new value")
-                    new_value = input(Fore.BLUE + ">>>:")
-                    self.notebook.edit_note(title, parameter, new_value)
-                    print_red_message("note", f"{title}", "edited")
-                    log("note", f"{title}", "edited")
+                if self.notebook:
+                    all_titles = []
+                    for key in self.notebook:
+                        all_titles.append(key['title'])
+                    print_all_titles(all_titles)
+                    print_green_message("enter the title")
+                    title = input(Fore.BLUE + ">>>:")
+                    if title in all_titles:
+                        print_green_message("enter the parameter to edit")
+                        parameter = input(Fore.BLUE + ">>>:")
+                        print_green_message("enter new value")
+                        new_value = input(Fore.BLUE + ">>>:")
+                        self.notebook.edit_note(title, parameter, new_value)
+                        print_red_message(f"note '{title}' edited")
+                        log(f"note '{title}' edited")
+                    else:
+                        print_red_message("title not found")
+                        log(f"not found - {title} title")
                 else:
-                    log("title not found")
-                    print_red_message("title not found")
+                    print_red_message(f"notebook empty")
+                    log(f"notebook empty")
+
 
             elif command == "6":
-                all_titles = []
-                for key in self.notebook:
-                    all_titles.append(key['title'])
-                print_all_titles(all_titles)
-                print_green_message("enter the title")
-                title = input(Fore.BLUE + ">>>:")
-                if title in all_titles:
-                    self.notebook.delete(title)
-                    print_red_message("note", f"{title}", "deleted")
-                    log("note", f"{title}", "deleted")
+                if self.notebook:
+                    all_titles = []
+                    for key in self.notebook:
+                        all_titles.append(key['title'])
+                    print_all_titles(all_titles)
+                    print_green_message("enter the title")
+                    title = input(Fore.BLUE + ">>>:")
+                    if title in all_titles:
+                        self.notebook.delete(title)
+                        print_red_message(f"note '{title}' deleted")
+                        log(f"note '{title}' deleted")
+                    else:
+                        print_red_message("title not found")
+                        log(f"not found - {title} title")
                 else:
-                    log("title not found")
-                    print_red_message("title not found")
+                    print_red_message(f"notebook empty")
+                    log(f"notebook empty")
+
 
             elif command == "7":
-                while True:
-                    print_yellow_message("are you sure for delete all? (y/n)")
-                    clear_all = input(Fore.BLUE + ">>>:")
-                    if clear_all == 'y':
-                        self.notebook.clear_notebook()
-                        print_red_message("notebook cleared")
-                        log("notebook cleared")
-                        break
-                    else:
-                        break
+                if self.notebook:
+                    while True:
+                        print_yellow_message("are you sure for delete all? (y/n)")
+                        clear_all = input(Fore.BLUE + ">>>:")
+                        if clear_all == 'y':
+                            self.notebook.clear_notebook()
+                            print_red_message(f"notebook cleared")
+                            log(f"notebook cleared")
+                            break
+                        else:
+                            break
+                else:
+                    print_red_message(f"notebook empty")
+                    log(f"notebook empty")
+
 
             elif command == "8":
                 print_green_message("save file name")
                 file_name = input(Fore.BLUE + ">>>:").strip()
                 if file_name:
                     self.notebook.save(file_name)
-                    print_red_message(f"notebook {file_name} saved")
+                    print_red_message(f"notebook '{file_name}' saved")
+                    log(f"notebook '{file_name}' saved")
                 else:
                     print_red_message("please enter file name")
 
@@ -1131,12 +1154,15 @@ class BotNotebook:
                 file_name = input(Fore.BLUE + ">>>:").strip()
                 if file_name:
                     self.notebook.load(file_name)
-                    print_red_message(f"notebook {file_name} loaded")
+                    print_red_message(f"notebook '{file_name}' loaded")
+                    log(f"notebook '{file_name}' loaded")
                 else:
                     print_red_message("please enter file name")
+                    log("please enter file name")
 
         except Exception as e:
-            print(f'{e} invalid input, try again')
+            print(f"invalid input, error: {e}, try again")
+            log(f"invalid input, error: {e}, try again")
 
 
 def notebook():
@@ -1145,8 +1171,12 @@ def notebook():
     notebot = BotNotebook()
     if os.path.exists(f"{file_name}.bin"):
         notebot.notebook.load(file_name)
+        print_red_message(f"notebook '{file_name}' loaded")
+        log(f"notebook '{file_name}' loaded")
     else:
         notebot.notebook.save(file_name)
+        print_red_message(f"notebook '{file_name}' saved")
+        log(f"notebook '{file_name}' saved")
 
     while True:
         os.system("cls")
@@ -1155,14 +1185,18 @@ def notebook():
         user_input = input(Fore.BLUE + ">>>:")
         if user_input == "10":
             notebot.notebook.save(file_name)
+            print_red_message(f"notebook '{file_name}' saved")
+            log(f"notebook '{file_name}' saved")
             print_goodbye()
             break
 
         notebot.handle(user_input)
-        input(Fore.MAGENTA + "press Enter to continue")
+        input(Fore.MAGENTA + "< press Enter to continue >")
 
         if user_input in ["2", "5", "6", "7"]:
             notebot.notebook.save(file_name)
+            print_red_message(f"notebook '{file_name}' saved")
+            log(f"notebook '{file_name}' saved")
 
 
 class FileSort:
@@ -1251,18 +1285,18 @@ class BotFilesort:
                     self.filesort.sort_func(path)
                     self.filesort.unpack_archive(path)
                     self.filesort.print_result_sort(path)
-                    print_yellow_message('sorting completed successfully')
-                    input(Fore.MAGENTA + "press Enter to continue")
+                    print_yellow_message(f"sorting completed successfully")
+                    input(Fore.MAGENTA + "< press Enter to continue >")
                     break
 
                 else:
-                    print_red_message(f'path {path} is not found, try again')
-                    log(f'path {path} is not found, try again')
+                    print_red_message(f"path '{path}' is not found, try again")
+                    log(f"'path '{path}' is not found, try again'")
                     input(Fore.MAGENTA + "press Enter to continue")
                     continue
 
             except KeyboardInterrupt:
-                input(Fore.MAGENTA + "press Enter to continue")
+                input(Fore.MAGENTA + "< press Enter to continue >")
 
 
 def filesort():
@@ -1302,7 +1336,7 @@ def calculate():
                 continue
             except ZeroDivisionError:
                 print_red_message("incorrect operating division by zero, try again!")
-                input(Fore.YELLOW + "press Enter to continue")
+                input(Fore.YELLOW + "< press Enter to continue >")
                 continue
 
         elif user_input == '2':
