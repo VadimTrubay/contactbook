@@ -12,11 +12,11 @@ def print_main_menu():
     """
     print_red_message("{:^42}".format("Menu"))
     print_white_message(42 * "-" + "")
-    print_green_message('1. address book')
-    print_green_message('2. note book')
-    print_green_message('3. file sort')
-    print_green_message('4. calculator')
-    print_green_message('5. exit')
+    print_green_message("1. address book")
+    print_green_message("2. note book")
+    print_green_message("3. file sort")
+    print_green_message("4. calculator")
+    print_green_message("5. exit")
     print_white_message(42 * "-" + "\n")
 
 
@@ -26,17 +26,17 @@ def print_contactbook_menu():
     """
     print_red_message("{:^42}".format("Contactbook"))
     print_white_message(42 * "-" + "")
-    print_green_message('1. show all contacts')
-    print_green_message('2. add new contact')
-    print_green_message('3. find contacts by pattern')
-    print_green_message('4. edit contact')
-    print_green_message('5. congratulate contacts')
-    print_green_message('6. days to birthday')
-    print_green_message('7. delete contact')
-    print_green_message('8. clear contactbook')
-    print_green_message('9. save contactbook')
-    print_green_message('10. load contactbook')
-    print_green_message('11. exit')
+    print_green_message("1. show all contacts")
+    print_green_message("2. add new contact")
+    print_green_message("3. find contacts by pattern")
+    print_green_message("4. edit contact")
+    print_green_message("5. congratulate contacts")
+    print_green_message("6. days to birthday")
+    print_green_message("7. delete contact")
+    print_green_message("8. clear contactbook")
+    print_green_message("9. save contactbook")
+    print_green_message("10. load contactbook")
+    print_green_message("11. exit")
     print_white_message(42 * "-" + "")
 
 
@@ -46,16 +46,16 @@ def print_notebook_menu():
     """
     print_red_message("{:^42}".format("Notebook"))
     print_white_message(42 * "-" + "")
-    print_green_message('1. show all notes')
-    print_green_message('2. add new note')
-    print_green_message('3. find note by title')
-    print_green_message('4. find note by tag')
-    print_green_message('5. edit note')
-    print_green_message('6. delete note')
-    print_green_message('7. clear notebook')
-    print_green_message('8. save notebook')
-    print_green_message('9. load notebook')
-    print_green_message('10. exit')
+    print_green_message("1. show all notes")
+    print_green_message("2. add new note")
+    print_green_message("3. find note by title")
+    print_green_message("4. find note by tag")
+    print_green_message("5. edit note")
+    print_green_message("6. delete note")
+    print_green_message("7. clear notebook")
+    print_green_message("8. save notebook")
+    print_green_message("9. load notebook")
+    print_green_message("10. exit")
     print_white_message(42 * "-" + "")
 
 
@@ -65,8 +65,8 @@ def print_filesort_menu():
     """
     print_red_message("{:^42}".format("Filesort"))
     print_white_message(42 * "-" + "")
-    print_green_message('1. run filesort')
-    print_green_message('2. exit')
+    print_green_message("1. run filesort")
+    print_green_message("2. exit")
     print_white_message(42 * "-" + "")
 
 
@@ -76,8 +76,8 @@ def print_calculator_menu():
     """
     print_red_message("{:^42}".format("Calculator"))
     print_white_message(42 * "-" + "")
-    print_green_message('1. run calculator')
-    print_green_message('2. exit')
+    print_green_message("1. run calculator")
+    print_green_message("2. exit")
     print_white_message(42 * "-" + "")
 
 
@@ -188,5 +188,5 @@ def print_goodbye():
     """
     The print_goodbye function prints a yellow goodbye message to the user.
     """
-    print_yellow_message('Good bye!')
+    print_yellow_message("Good bye!")
     sleep(1)
