@@ -18,27 +18,78 @@ from colorama import init
 from printing import *
 from logs import log
 
-FIELDS_CONTACT = ["firstname", "lastname", "phone", "birthday", "address", "email", "status", "note"]
+FIELDS_CONTACT = [
+    "firstname",
+    "lastname",
+    "phone",
+    "birthday",
+    "address",
+    "email",
+    "status",
+    "note",
+]
 FIELDS_NOTE = ["title", "note", "tag"]
 
-suff_dict = {'images': ['.jpg', '.jpeg', '.png', '.gif', '.tiff', '.ico', '.bmp', '.webp', '.svg'],
-             'documents': ['.md', '.epub', '.txt', '.docx', '.doc', '.ods', '.odt', '.dotx', '.docm', '.dox',
-                           '.rvg', '.rtf', '.rtfd', '.wpd', '.xls', '.xlsx', '.ppt', '.pptx', '.csv', '.xml'],
-             'archives': ['.tar', '.gz', '.zip', '.rar'],
-             'audio': ['.aac', '.m4a', '.mp3', '.ogg', '.raw', '.wav', '.wma'],
-             'video': ['.avi', '.flv', '.wmv', '.mov', '.mp4', '.webm', '.vob', '.mpg', '.mpeg', '.3gp'],
-             'pdf': ['.pdf'],
-             'html': ['.html', '.htm', '.xhtml'],
-             'exe_msi': ['.exe', '.msi'],
-             'scripts': ['.sh', '.bat', '.ps1'],
-             'fonts': ['.ttf', '.otf', '.woff', '.woff2'],
-             'data': ['.json', '.xml', '.yaml', '.csv'],
-             'programming_lang': ['.java', '.c', '.cpp', '.cs', '.php', '.js', '.py'],
-             'compressed': ['.7z', '.tar.gz', '.bz2', '.xz'],
-             'presentation': ['.key', '.odp'],
-             'cad': ['.dwg', '.dxf'],
-             'backup': ['.bak', '.backup'],
-             }
+suff_dict = {
+    "images": [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".gif",
+        ".tiff",
+        ".ico",
+        ".bmp",
+        ".webp",
+        ".svg",
+    ],
+    "documents": [
+        ".md",
+        ".epub",
+        ".txt",
+        ".docx",
+        ".doc",
+        ".ods",
+        ".odt",
+        ".dotx",
+        ".docm",
+        ".dox",
+        ".rvg",
+        ".rtf",
+        ".rtfd",
+        ".wpd",
+        ".xls",
+        ".xlsx",
+        ".ppt",
+        ".pptx",
+        ".csv",
+        ".xml",
+    ],
+    "archives": [".tar", ".gz", ".zip", ".rar"],
+    "audio": [".aac", ".m4a", ".mp3", ".ogg", ".raw", ".wav", ".wma"],
+    "video": [
+        ".avi",
+        ".flv",
+        ".wmv",
+        ".mov",
+        ".mp4",
+        ".webm",
+        ".vob",
+        ".mpg",
+        ".mpeg",
+        ".3gp",
+    ],
+    "pdf": [".pdf"],
+    "html": [".html", ".htm", ".xhtml"],
+    "exe_msi": [".exe", ".msi"],
+    "scripts": [".sh", ".bat", ".ps1"],
+    "fonts": [".ttf", ".otf", ".woff", ".woff2"],
+    "data": [".json", ".xml", ".yaml", ".csv"],
+    "programming_lang": [".java", ".c", ".cpp", ".cs", ".php", ".js", ".py"],
+    "compressed": [".7z", ".tar.gz", ".bz2", ".xz"],
+    "presentation": [".key", ".odp"],
+    "cad": [".dwg", ".dxf"],
+    "backup": [".bak", ".backup"],
+}
 
 
 def iterator(n: int, data: list) -> Iterator[list]:
@@ -70,9 +121,17 @@ def get_page(n: int, data):
 
 
 class RecordContactbook:
-
-    def __init__(self, firstname="", lastname="", phone="", birthday="",
-                 address="", email="", status="", note=""):
+    def __init__(
+        self,
+        firstname="",
+        lastname="",
+        phone="",
+        birthday="",
+        address="",
+        email="",
+        status="",
+        note="",
+    ):
         self.firstname = firstname
         self.lastname = lastname
         self.phone = phone
@@ -84,7 +143,6 @@ class RecordContactbook:
 
 
 class Contactbook(UserList):
-
     def __init__(self):
         super().__init__()
         self.data = []
@@ -92,41 +150,45 @@ class Contactbook(UserList):
     def __str__(self) -> List[str]:
         result = []
         for item in self.data:
-            result.append(f"firstname: {item['firstname']}\n"
-                          f"lastname: {item['lastname']}\n"
-                          f"phone: {item['phone']}\n"
-                          f"birthday: {item['birthday']}\n"
-                          f"address: {item['address']}\n"
-                          f"email: {item['email']}\n"
-                          f"status: {item['status']}\n"
-                          f"note: {item['note']}\n")
+            result.append(
+                f"firstname: {item['firstname']}\n"
+                f"lastname: {item['lastname']}\n"
+                f"phone: {item['phone']}\n"
+                f"birthday: {item['birthday']}\n"
+                f"address: {item['address']}\n"
+                f"email: {item['email']}\n"
+                f"status: {item['status']}\n"
+                f"note: {item['note']}\n"
+            )
 
         return result
 
     def __setitem__(self, key, value):
-        self.data[key] = {"firstname": value.firstname,
-                          "lastname": value.lastname,
-                          "phone": value.phone,
-                          "birthday": value.birthday,
-                          "address": value.address,
-                          "email": value.email,
-                          "status": value.status,
-                          "note": value.note
-                          }
+        self.data[key] = {
+            "firstname": value.firstname,
+            "lastname": value.lastname,
+            "phone": value.phone,
+            "birthday": value.birthday,
+            "address": value.address,
+            "email": value.email,
+            "status": value.status,
+            "note": value.note,
+        }
 
     def __getitem__(self, key) -> Dict:
         return self.data[key]
 
     def add(self, record: RecordContactbook):
-        rec = {"firstname": record.firstname,
-               "lastname": record.lastname,
-               "phone": record.phone,
-               "birthday": record.birthday,
-               "address": record.address,
-               "email": record.email,
-               "status": record.status,
-               "note": record.note
-               }
+        rec = {
+            "firstname": record.firstname,
+            "lastname": record.lastname,
+            "phone": record.phone,
+            "birthday": record.birthday,
+            "address": record.address,
+            "email": record.email,
+            "status": record.status,
+            "note": record.note,
+        }
 
         self.data.append(rec)
 
@@ -158,7 +220,13 @@ class Contactbook(UserList):
 
     def congratulate(self) -> Dict[str, List[str]]:
         weekdays = ["", "monday", "tuesday", "wednesday", "thursday", "friday"]
-        congratulate = {"monday": [], "tuesday": [], "wednesday": [], "thursday": [], "friday": []}
+        congratulate = {
+            "monday": [],
+            "tuesday": [],
+            "wednesday": [],
+            "thursday": [],
+            "friday": [],
+        }
         for item in self.data:
             if item["birthday"]:
                 birthday = item["birthday"]
@@ -170,12 +238,19 @@ class Contactbook(UserList):
                 current_date = date.today()
                 new_birthday = birth_day.replace(year=current_date.year)
                 birthday_weekday = new_birthday.weekday() + 1
-                if self.__get_current_week()[0] <= new_birthday <= self.__get_current_week()[1]:
+                if (
+                    self.__get_current_week()[0]
+                    <= new_birthday
+                    <= self.__get_current_week()[1]
+                ):
                     if birthday_weekday <= 5:
                         congratulate[weekdays[birthday_weekday]].append(
-                            item["firstname"] + " " + item["lastname"])
+                            item["firstname"] + " " + item["lastname"]
+                        )
                     else:
-                        congratulate["monday"].append(item["firstname"] + " " + item["lastname"])
+                        congratulate["monday"].append(
+                            item["firstname"] + " " + item["lastname"]
+                        )
         return congratulate
 
     def days_to_birthday(self, firstname: str, lastname: str):
@@ -184,9 +259,11 @@ class Contactbook(UserList):
             if firstname == item["firstname"] and lastname == item["lastname"]:
                 birthday = item["birthday"]
                 try:
-                    birth_day = datetime.strptime(birthday, '%d.%m.%Y')
+                    birth_day = datetime.strptime(birthday, "%d.%m.%Y")
                 except:
-                    print_red_message(f"not a valid birthday date for '{firstname} {lastname}' contact")
+                    print_red_message(
+                        f"not a valid birthday date for '{firstname} {lastname}' contact"
+                    )
                     break
                 birth_day = date(birth_day.year, birth_day.month, birth_day.day)
                 current_date = date.today()
@@ -205,7 +282,9 @@ class Contactbook(UserList):
     def delete(self, firstname: str, lastname: str):
         for item in self.data:
             if firstname == item["firstname"] and lastname == item["lastname"]:
-                print_yellow_message(f"are you sure for delete '{firstname} {lastname}' contact? (y/n)")
+                print_yellow_message(
+                    f"are you sure for delete '{firstname} {lastname}' contact? (y/n)"
+                )
                 del_contact = input(Fore.BLUE + ">>>: ")
                 if del_contact == "y":
                     self.data.remove(item)
@@ -229,7 +308,6 @@ class Contactbook(UserList):
 
 
 class FieldContactbook(ABC):
-
     @abstractmethod
     def __getitem__(self):
         pass
@@ -307,8 +385,13 @@ class BirthdayContactbook(FieldContactbook):
                 print_green_message("birthday(dd.mm.YYYY)")
                 self.value = input(Fore.BLUE + ">>>: ")
             try:
-                if re.match(r'^(0[1-9]|[12][0-9]|3[01])[.](0[1-9]|1[012])[.](19|20)[0-9]{2}$',
-                            self.value) or self.value == "":
+                if (
+                    re.match(
+                        r"^(0[1-9]|[12][0-9]|3[01])[.](0[1-9]|1[012])[.](19|20)[0-9]{2}$",
+                        self.value,
+                    )
+                    or self.value == ""
+                ):
                     break
                 else:
                     raise ValueError
@@ -342,7 +425,6 @@ class AddressContactbook(FieldContactbook):
 
 
 class EmailContactbook(FieldContactbook):
-
     def __init__(self, value=""):
         while True:
             if value:
@@ -351,7 +433,10 @@ class EmailContactbook(FieldContactbook):
                 print_green_message("email")
                 self.value = input(Fore.BLUE + ">>>: ")
             try:
-                if re.match(r"^(\w|\.|_|-)+@(\w|_|-|\.)+[.]\w{2,3}$", self.value) or self.value == "":
+                if (
+                    re.match(r"^(\w|\.|_|-)+@(\w|_|-|\.)+[.]\w{2,3}$", self.value)
+                    or self.value == ""
+                ):
                     break
                 else:
                     raise ValueError
@@ -364,7 +449,6 @@ class EmailContactbook(FieldContactbook):
 
 
 class StatusContactbook(FieldContactbook):
-
     def __init__(self, value=""):
         while True:
             self.status_types = ["", "family", "friend", "work"]
@@ -387,7 +471,6 @@ class StatusContactbook(FieldContactbook):
 
 
 class NoteContactbook(FieldContactbook):
-
     def __init__(self, value=""):
         while True:
             if value:
@@ -440,8 +523,13 @@ class BotContactbook:
                 if firstname and lastname:
                     if self.contactbook:
                         for item in self.contactbook:
-                            if firstname == item["firstname"] and lastname == item["lastname"]:
-                                print_red_message(f"contact '{firstname} {lastname}' already exists")
+                            if (
+                                firstname == item["firstname"]
+                                and lastname == item["lastname"]
+                            ):
+                                print_red_message(
+                                    f"contact '{firstname} {lastname}' already exists"
+                                )
                                 log(f"contact '{firstname} {lastname}' already exists")
                                 break
                         else:
@@ -451,8 +539,16 @@ class BotContactbook:
                             email = EmailContactbook().value.strip()
                             status = StatusContactbook().value.strip()
                             note = NoteContactbook().value.strip()
-                            record = RecordContactbook(firstname, lastname, phone,
-                                                       birthday, address, email, status, note)
+                            record = RecordContactbook(
+                                firstname,
+                                lastname,
+                                phone,
+                                birthday,
+                                address,
+                                email,
+                                status,
+                                note,
+                            )
                             self.contactbook.add(record)
                             print_red_message(f"contact '{firstname} {lastname}' added")
                             log(f"contact '{firstname} {lastname}' added")
@@ -463,8 +559,16 @@ class BotContactbook:
                         email = EmailContactbook().value.strip()
                         status = StatusContactbook().value.strip()
                         note = NoteContactbook().value.strip()
-                        record = RecordContactbook(firstname, lastname, phone,
-                                                   birthday, address, email, status, note)
+                        record = RecordContactbook(
+                            firstname,
+                            lastname,
+                            phone,
+                            birthday,
+                            address,
+                            email,
+                            status,
+                            note,
+                        )
                         self.contactbook.add(record)
                         print_red_message(f"contact '{firstname} {lastname}' added")
                         log(f"contact '{firstname} {lastname}' added")
@@ -475,8 +579,16 @@ class BotContactbook:
             elif command == "3":
                 if self.contactbook:
                     print_green_message("enter the parameter to find")
-                    parameter_list = ["firstname", "lastname", "phone", "birthday", "address", "email", "status",
-                                      "note"]
+                    parameter_list = [
+                        "firstname",
+                        "lastname",
+                        "phone",
+                        "birthday",
+                        "address",
+                        "email",
+                        "status",
+                        "note",
+                    ]
                     print_green_message(", ".join(parameter_list))
                     parameter = input(Fore.BLUE + ">>>: ").strip()
                     if parameter in parameter_list:
@@ -488,7 +600,9 @@ class BotContactbook:
                                 for item in result:
                                     print_record(item)
                             else:
-                                print_red_message(f"no matches found for - '{pattern}' pattern")
+                                print_red_message(
+                                    f"no matches found for - '{pattern}' pattern"
+                                )
                                 log(f"no matches found for - '{pattern}' pattern")
                         else:
                             print_red_message(f"please enter a valid pattern")
@@ -511,16 +625,28 @@ class BotContactbook:
                     print_green_message("enter the lastname to edit")
                     lastname = input(Fore.BLUE + ">>>: ")
                     if firstname + " " + lastname in all_contacts:
-                        parameter_list = ["firstname", "lastname", "phone", "birthday", "address", "email", "status",
-                                          "note"]
+                        parameter_list = [
+                            "firstname",
+                            "lastname",
+                            "phone",
+                            "birthday",
+                            "address",
+                            "email",
+                            "status",
+                            "note",
+                        ]
                         print_green_message("enter the parameter to edit")
                         print_green_message(", ".join(parameter_list))
                         parameter = input(Fore.BLUE + ">>>: ").strip()
                         if parameter in parameter_list:
                             print_green_message("enter new value")
                             new_value = input(Fore.BLUE + ">>>: ")
-                            self.contactbook.edit(firstname, lastname, parameter, new_value)
-                            print_red_message(f"contact '{firstname} {lastname}' edited")
+                            self.contactbook.edit(
+                                firstname, lastname, parameter, new_value
+                            )
+                            print_red_message(
+                                f"contact '{firstname} {lastname}' edited"
+                            )
                             log(f"contact '{firstname} {lastname}' edited")
                         else:
                             print_red_message(f"please enter a valid parameter")
@@ -551,13 +677,17 @@ class BotContactbook:
                     print_all_name_contacts(all_contacts)
                     print_green_message("enter the firstname to birthday")
                     firstname = input(Fore.BLUE + ">>>: ")
-                    print_green_message('enter the lastname to birthday')
+                    print_green_message("enter the lastname to birthday")
                     lastname = input(Fore.BLUE + ">>>: ")
                     if firstname + " " + lastname in all_contacts:
                         days = self.contactbook.days_to_birthday(firstname, lastname)
                         if days:
-                            print_yellow_message(f"{days} days left until '{firstname} {lastname}''s birthday")
-                            log(f"{days} days left until '{firstname} {lastname}''s birthday")
+                            print_yellow_message(
+                                f"{days} days left until '{firstname} {lastname}''s birthday"
+                            )
+                            log(
+                                f"{days} days left until '{firstname} {lastname}''s birthday"
+                            )
                     else:
                         log(f"contact '{firstname} {lastname}' not found")
                         print_red_message(f"contact '{firstname} {lastname}' not found")
@@ -573,9 +703,9 @@ class BotContactbook:
                     print_all_name_contacts(all_contacts)
                     print_green_message("enter the firstname to delete")
                     firstname = input(Fore.BLUE + ">>>: ")
-                    print_green_message('enter the lastname to delete')
+                    print_green_message("enter the lastname to delete")
                     lastname = input(Fore.BLUE + ">>>: ")
-                    if firstname + ' ' + lastname in all_contacts:
+                    if firstname + " " + lastname in all_contacts:
                         self.contactbook.delete(firstname, lastname)
                         print_red_message(f"contact '{firstname} {lastname}' deleted")
                         log(f"contact '{firstname} {lastname}' deleted")
@@ -664,7 +794,6 @@ def contactbook():
 
 
 class RecordNotebook:
-
     def __init__(self, title="", note="", tag=""):
         self.title = title
         self.note = note
@@ -672,7 +801,6 @@ class RecordNotebook:
 
 
 class NoteBook(UserList):
-
     def __init__(self):
         super().__init__()
         self.data = []
@@ -680,26 +808,22 @@ class NoteBook(UserList):
     def __str__(self) -> List[str]:
         result = []
         for item in self.data:
-            result.append(f"title: {item['title']}\n"
-                          f"note: {item['note']}\n"
-                          f"tag: {item['tag']}\n")
+            result.append(
+                f"title: {item['title']}\n"
+                f"note: {item['note']}\n"
+                f"tag: {item['tag']}\n"
+            )
 
         return result
 
     def __setitem__(self, key, value):
-        self.data[key] = {"title": value.title,
-                          "note": value.note,
-                          "tag": value.tag
-                          }
+        self.data[key] = {"title": value.title, "note": value.note, "tag": value.tag}
 
     def __getitem__(self, key):
         return self.data[key]
 
     def add(self, record: RecordNotebook):
-        note = {"title": record.title,
-                "note": record.note,
-                "tag": record.tag
-                }
+        note = {"title": record.title, "note": record.note, "tag": record.tag}
         self.data.append(note)
 
     def find_note_by_title(self, title: str) -> List:
@@ -739,7 +863,7 @@ class NoteBook(UserList):
         self.data.clear()
 
     def save(self, file_name: str):
-        with open(f"{file_name}.bin", 'wb') as file:
+        with open(f"{file_name}.bin", "wb") as file:
             pickle.dump(self.data, file)
 
     def load(self, file_name: str):
@@ -751,7 +875,6 @@ class NoteBook(UserList):
 
 
 class FieldNotebook(ABC):
-
     @abstractmethod
     def __getitem__(self):
         pass
@@ -766,7 +889,7 @@ class TitleNotebook(FieldNotebook):
                 print_green_message("title*")
                 self.value = input(Fore.BLUE + ">>>: ")
             try:
-                if re.match(r'^[a-zA-Z\d,. !_-]{1,50}$', self.value):
+                if re.match(r"^[a-zA-Z\d,. !_-]{1,50}$", self.value):
                     break
                 else:
                     raise ValueError
@@ -779,7 +902,6 @@ class TitleNotebook(FieldNotebook):
 
 
 class NoteNotebook(FieldNotebook):
-
     def __init__(self, value=""):
         while True:
             if value:
@@ -788,7 +910,10 @@ class NoteNotebook(FieldNotebook):
                 print_green_message("note")
                 self.value = input(Fore.BLUE + ">>>:")
             try:
-                if re.match(r'^[a-zA-Z()?\d,. \-_!]{1,250}$', self.value) or self.value == "":
+                if (
+                    re.match(r"^[a-zA-Z()?\d,. \-_!]{1,250}$", self.value)
+                    or self.value == ""
+                ):
                     break
                 else:
                     raise ValueError
@@ -801,7 +926,6 @@ class NoteNotebook(FieldNotebook):
 
 
 class TagNotebook(FieldNotebook):
-
     def __init__(self, value=""):
         while True:
             if value:
@@ -810,7 +934,7 @@ class TagNotebook(FieldNotebook):
                 print_green_message("tag")
                 self.value = input(Fore.BLUE + ">>>:")
             try:
-                if re.match(r'^[a-zA-Z\d,. !]{1,20}$', self.value) or self.value == "":
+                if re.match(r"^[a-zA-Z\d,. !]{1,20}$", self.value) or self.value == "":
                     break
                 else:
                     raise ValueError
@@ -823,7 +947,6 @@ class TagNotebook(FieldNotebook):
 
 
 class BotNotebook:
-
     def __init__(self):
         self.notebook = NoteBook()
 
@@ -854,7 +977,7 @@ class BotNotebook:
                 if title:
                     if self.notebook:
                         for item in self.notebook:
-                            if title == item['title']:
+                            if title == item["title"]:
                                 print_red_message(f"title '{title}' already exists")
                                 log(f"title '{title}' already exists")
                                 break
@@ -919,7 +1042,7 @@ class BotNotebook:
                 if self.notebook:
                     all_titles = []
                     for key in self.notebook:
-                        all_titles.append(key['title'])
+                        all_titles.append(key["title"])
                     print_all_titles(all_titles)
                     print_green_message("enter the title")
                     title = input(Fore.BLUE + ">>>:")
@@ -942,7 +1065,7 @@ class BotNotebook:
                 if self.notebook:
                     all_titles = []
                     for key in self.notebook:
-                        all_titles.append(key['title'])
+                        all_titles.append(key["title"])
                     print_all_titles(all_titles)
                     print_green_message("enter the title")
                     title = input(Fore.BLUE + ">>>:")
@@ -962,7 +1085,7 @@ class BotNotebook:
                     while True:
                         print_yellow_message("are you sure for delete all? (y/n)")
                         clear_all = input(Fore.BLUE + ">>>:")
-                        if clear_all == 'y':
+                        if clear_all == "y":
                             self.notebook.clear_notebook()
                             print_red_message(f"notebook cleared")
                             log(f"notebook cleared")
@@ -1036,24 +1159,57 @@ def notebook():
 class FileSort:
     @staticmethod
     def normalize(name: str, suffix: str) -> str:
-        cyrillic = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
+        cyrillic = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
         translation = (
-            "a", "b", "v", "g", "d", "e", "e", "j", "z", "i", "j", "k", "l", "m", "n", "o", "p", "r", "s", "t", "u",
-            "f", "h", "ts", "ch", "sh", "sch", "", "y", "", "e", "yu", "u", "ja")
+            "a",
+            "b",
+            "v",
+            "g",
+            "d",
+            "e",
+            "e",
+            "j",
+            "z",
+            "i",
+            "j",
+            "k",
+            "l",
+            "m",
+            "n",
+            "o",
+            "p",
+            "r",
+            "s",
+            "t",
+            "u",
+            "f",
+            "h",
+            "ts",
+            "ch",
+            "sh",
+            "sch",
+            "",
+            "y",
+            "",
+            "e",
+            "yu",
+            "u",
+            "ja",
+        )
 
         trans = {}
         for c, l in zip(cyrillic, translation):
             trans[ord(c)] = l
             trans[ord(c.upper())] = l.upper()
         new_name = name.translate(trans)
-        new_name = re.sub(r'\W', '_', new_name)
+        new_name = re.sub(r"\W", "_", new_name)
         return new_name + suffix
 
     @staticmethod
     def unpack_archive(path: Path):
         if path.is_dir():
             for item in path.iterdir():
-                if item.name == 'archives':
+                if item.name == "archives":
                     for arch in item.iterdir():
                         name = item / arch.stem
                         name.mkdir(parents=True, exist_ok=True)
@@ -1069,7 +1225,9 @@ class FileSort:
             for item in path.iterdir():
                 if item.is_dir():
                     result = [f for f in os.listdir(item)]
-                    print_white_message(f"files in category {item.name}: {', '.join(result)}")
+                    print_white_message(
+                        f"files in category {item.name}: {', '.join(result)}"
+                    )
                 else:
                     continue
 
@@ -1089,13 +1247,17 @@ class FileSort:
                                 target_dir = path / key
                                 target_dir.mkdir(exist_ok=True)
                                 shutil.move(item, target_dir / new_name)
-                                print_white_message(f"file {new_name} has been successfully moved")
+                                print_white_message(
+                                    f"file {new_name} has been successfully moved"
+                                )
                                 break
                         else:
-                            target_dir = path / 'unknown'
+                            target_dir = path / "unknown"
                             target_dir.mkdir(exist_ok=True)
                             shutil.move(item, target_dir / new_name)
-                            print_white_message(f"file {new_name} has been successfully moved")
+                            print_white_message(
+                                f"file {new_name} has been successfully moved"
+                            )
 
                     except Exception as e:
                         print(f"error while processing {item}: {e}")
@@ -1105,7 +1267,6 @@ class FileSort:
 
 
 class BotFilesort:
-
     def __init__(self):
         self.filesort = FileSort()
 
@@ -1136,7 +1297,7 @@ def filesort():
     init()
     botfilesort = BotFilesort()
     while True:
-        os.system('cls')
+        os.system("cls")
         print_filesort_menu()
         print_white_message("your choose(number)")
         user_input = input(Fore.BLUE + ">>>:")
@@ -1156,7 +1317,7 @@ def calculate():
         print_calculator_menu()
         print(Fore.WHITE + "your choose(number)")
         user_input = input(Fore.BLUE + ">>>:")
-        if user_input == '1':
+        if user_input == "1":
             print(Fore.GREEN + "enter a mathematical operation")
             operation = input(Fore.BLUE + ">>>:")
             try:
@@ -1175,7 +1336,7 @@ def calculate():
                 print_red_message("invalid syntax, try again!")
                 input(Fore.YELLOW + "< press Enter to continue >")
 
-        elif user_input == '2':
+        elif user_input == "2":
             print_goodbye()
             break
 
@@ -1205,5 +1366,5 @@ def main():
             break
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
