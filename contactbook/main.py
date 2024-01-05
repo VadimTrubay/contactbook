@@ -93,6 +93,14 @@ suff_dict = {
 
 
 def iterator(n: int, data: list) -> Iterator[list]:
+    """
+    The iterator function takes a list of data and returns an iterator that yields
+    a sublist of the original list with n elements. The last sublist may have less than
+    n elements if the length of the original list is not divisible by n.
+    :param n: int: Specify the number of items in each chunk
+    :param data: list: Store the data that is to be iterated over
+    :return: A generator object
+    """
     index = 0
     temp = []
     for value in data:
@@ -107,6 +115,14 @@ def iterator(n: int, data: list) -> Iterator[list]:
 
 
 def get_page(n: int, data):
+    """
+    The get_page function takes two arguments:
+        n - the number of records to display per page
+        data - a list of dictionaries containing the data to be displayed
+    :param n: int: Determine the number of records that will be printed per page
+    :param data: Pass the data to the generator function
+    :return: A generator object
+    """
     gen = iterator(n, data)
     for i in range(len(data)):
         try:
@@ -179,6 +195,14 @@ class Contactbook(UserList):
         return self.data[key]
 
     def add(self, record: RecordContactbook):
+        """
+        The add function adds a record to the contactbook.
+            Args:
+                record (RecordContactbook): The record to be added.
+        :param self: Represent the instance of the class
+        :param record: RecordContactbook: Pass the record object to the add function
+        :return: Nothing, so it will return none
+        """
         rec = {
             "firstname": record.firstname,
             "lastname": record.lastname,
@@ -193,6 +217,15 @@ class Contactbook(UserList):
         self.data.append(rec)
 
     def find_info(self, parameter: str, pattern: str) -> List:
+        """
+        The find_info function takes a parameter and a pattern as arguments.
+            It then searches the data for any item that contains the pattern in its value for the given parameter.
+            If it finds such an item, it appends that item to a list of results and returns this list.
+        :param self: Represent the instance of the class
+        :param parameter: str: Specify the key in the dictionary
+        :param pattern: str: Specify what you are looking for in the data
+        :return: A list of dictionaries that match the pattern
+        """
         result = []
         for item in self.data:
             if pattern in item[parameter]:
@@ -200,6 +233,17 @@ class Contactbook(UserList):
         return result
 
     def edit(self, firstname: str, lastname: str, parameter: str, new_value: str):
+        """
+        The edit function takes in a firstname, lastname, parameter and new_value.
+        It then iterates through the data list of dictionaries to find the dictionary with matching first and last name.
+        Once it finds that dictionary it changes the value of that key to be equal to new_value.
+        :param self: Represent the instance of the class
+        :param firstname: str: Identify the firstname of the person you want to edit
+        :param lastname: str: Identify the person in the data list
+        :param parameter: str: Specify which parameter of the dictionary you want to edit
+        :param new_value: str: Define the new value that will be assigned to the parameter
+        :return: Nothing, so it returns none
+        """
         for item in self.data:
             if item["firstname"] == firstname and item["lastname"] == lastname:
                 item[parameter] = new_value
@@ -234,7 +278,8 @@ class Contactbook(UserList):
                     birth_day = datetime.strptime(birthday, "%d.%m.%Y")
                 except:
                     continue
-                birth_day = date(birth_day.year, birth_day.month, birth_day.day)
+                birth_day = date(
+                    birth_day.year, birth_day.month, birth_day.day)
                 current_date = date.today()
                 new_birthday = birth_day.replace(year=current_date.year)
                 birthday_weekday = new_birthday.weekday() + 1
@@ -265,7 +310,8 @@ class Contactbook(UserList):
                         f"not a valid birthday date for '{firstname} {lastname}' contact"
                     )
                     break
-                birth_day = date(birth_day.year, birth_day.month, birth_day.day)
+                birth_day = date(
+                    birth_day.year, birth_day.month, birth_day.day)
                 current_date = date.today()
                 user_date = birth_day.replace(year=current_date.year)
                 delta_days = user_date - current_date
@@ -328,7 +374,8 @@ class FirstNameContactbook(FieldContactbook):
                     raise ValueError
             except ValueError:
                 log(f"incorrect firstname - '{self.value}'")
-                print_red_message(f"incorrect firstname, - '{self.value}' try again")
+                print_red_message(
+                    f"incorrect firstname, - '{self.value}' try again")
 
     def __getitem__(self):
         return self.value
@@ -370,7 +417,8 @@ class PhoneContactbook(FieldContactbook):
                     raise ValueError
             except ValueError:
                 log(f"incorrect phone number - '{self.value}'")
-                print_red_message(f"incorrect phone number, - '{self.value}' try again")
+                print_red_message(
+                    f"incorrect phone number, - '{self.value}' try again")
 
     def __getitem__(self):
         return self.value
@@ -397,7 +445,8 @@ class BirthdayContactbook(FieldContactbook):
                     raise ValueError
             except ValueError:
                 log(f"incorrect birthday - '{self.value}'")
-                print_red_message(f"incorrect birthday, - '{self.value}' try again")
+                print_red_message(
+                    f"incorrect birthday, - '{self.value}' try again")
 
     def __getitem__(self):
         return self.value
@@ -418,7 +467,8 @@ class AddressContactbook(FieldContactbook):
                     raise ValueError
             except ValueError:
                 log(f"incorrect address - '{self.value}'")
-                print_red_message(f"incorrect address, - '{self.value}' try again")
+                print_red_message(
+                    f"incorrect address, - '{self.value}' try again")
 
     def __getitem__(self):
         return self.value
@@ -434,7 +484,8 @@ class EmailContactbook(FieldContactbook):
                 self.value = input(Fore.BLUE + ">>>: ")
             try:
                 if (
-                    re.match(r"^(\w|\.|_|-)+@(\w|_|-|\.)+[.]\w{2,3}$", self.value)
+                    re.match(
+                        r"^(\w|\.|_|-)+@(\w|_|-|\.)+[.]\w{2,3}$", self.value)
                     or self.value == ""
                 ):
                     break
@@ -442,7 +493,8 @@ class EmailContactbook(FieldContactbook):
                     raise ValueError
             except ValueError:
                 log(f"incorrect email - '{self.value}'")
-                print_red_message(f"incorrect email, - '{self.value}' try again")
+                print_red_message(
+                    f"incorrect email, - '{self.value}' try again")
 
     def __getitem__(self):
         return self.value
@@ -464,7 +516,8 @@ class StatusContactbook(FieldContactbook):
                     raise ValueError
             except ValueError:
                 log(f"incorrect status - '{self.value}'")
-                print_red_message(f"incorrect status, - '{self.value}' try again")
+                print_red_message(
+                    f"incorrect status, - '{self.value}' try again")
 
     def __getitem__(self):
         return self.value
@@ -485,7 +538,8 @@ class NoteContactbook(FieldContactbook):
                     raise ValueError
             except ValueError:
                 log(f"incorrect note - '{self.value}'")
-                print_red_message(f"incorrect note, - '{self.value}' try again")
+                print_red_message(
+                    f"incorrect note, - '{self.value}' try again")
 
     def __getitem__(self):
         return self.value
@@ -504,7 +558,8 @@ class BotContactbook:
                             print_green_message("number of note per page")
                             n = int(input(Fore.BLUE + ">>>: "))
                         except ValueError:
-                            print_red_message(f"incorrect number of page, try again")
+                            print_red_message(
+                                f"incorrect number of page, try again")
                             log(f"incorrect number of page, try again")
                             continue
 
@@ -550,7 +605,8 @@ class BotContactbook:
                                 note,
                             )
                             self.contactbook.add(record)
-                            print_red_message(f"contact '{firstname} {lastname}' added")
+                            print_red_message(
+                                f"contact '{firstname} {lastname}' added")
                             log(f"contact '{firstname} {lastname}' added")
                     else:
                         phone = PhoneContactbook().value.strip()
@@ -570,7 +626,8 @@ class BotContactbook:
                             note,
                         )
                         self.contactbook.add(record)
-                        print_red_message(f"contact '{firstname} {lastname}' added")
+                        print_red_message(
+                            f"contact '{firstname} {lastname}' added")
                         log(f"contact '{firstname} {lastname}' added")
                 else:
                     print_red_message(f"please enter a name")
@@ -595,7 +652,8 @@ class BotContactbook:
                         print_green_message("enter the pattern:")
                         pattern = input(Fore.GREEN + ">>>: ").strip()
                         if pattern:
-                            result = self.contactbook.find_info(parameter, pattern)
+                            result = self.contactbook.find_info(
+                                parameter, pattern)
                             if result:
                                 for item in result:
                                     print_record(item)
@@ -618,7 +676,8 @@ class BotContactbook:
                 if self.contactbook:
                     all_contacts = []
                     for item in self.contactbook:
-                        all_contacts.append(item["firstname"] + " " + item["lastname"])
+                        all_contacts.append(
+                            item["firstname"] + " " + item["lastname"])
                     print_all_name_contacts(all_contacts)
                     print_green_message("enter the firstname to edit")
                     firstname = input(Fore.BLUE + ">>>: ")
@@ -649,11 +708,13 @@ class BotContactbook:
                             )
                             log(f"contact '{firstname} {lastname}' edited")
                         else:
-                            print_red_message(f"please enter a valid parameter")
+                            print_red_message(
+                                f"please enter a valid parameter")
                             log(f"please enter a valid parameter")
                     else:
                         log(f"contact '{firstname} {lastname}' not found")
-                        print_red_message(f"contact '{firstname} {lastname}' not found")
+                        print_red_message(
+                            f"contact '{firstname} {lastname}' not found")
                 else:
                     print_red_message(f"contactbook empty")
                     log(f"contactbook empty")
@@ -662,7 +723,8 @@ class BotContactbook:
                 if self.contactbook:
                     congratulate = self.contactbook.congratulate()
                     print_congratulate(congratulate)
-                    combined_list = list(chain.from_iterable(congratulate.values()))
+                    combined_list = list(
+                        chain.from_iterable(congratulate.values()))
                     if not combined_list:
                         print_red_message(f"congratulate list not found")
                 else:
@@ -673,14 +735,16 @@ class BotContactbook:
                 if self.contactbook:
                     all_contacts = []
                     for item in self.contactbook:
-                        all_contacts.append(item["firstname"] + " " + item["lastname"])
+                        all_contacts.append(
+                            item["firstname"] + " " + item["lastname"])
                     print_all_name_contacts(all_contacts)
                     print_green_message("enter the firstname to birthday")
                     firstname = input(Fore.BLUE + ">>>: ")
                     print_green_message("enter the lastname to birthday")
                     lastname = input(Fore.BLUE + ">>>: ")
                     if firstname + " " + lastname in all_contacts:
-                        days = self.contactbook.days_to_birthday(firstname, lastname)
+                        days = self.contactbook.days_to_birthday(
+                            firstname, lastname)
                         if days:
                             print_yellow_message(
                                 f"{days} days left until '{firstname} {lastname}''s birthday"
@@ -690,7 +754,8 @@ class BotContactbook:
                             )
                     else:
                         log(f"contact '{firstname} {lastname}' not found")
-                        print_red_message(f"contact '{firstname} {lastname}' not found")
+                        print_red_message(
+                            f"contact '{firstname} {lastname}' not found")
                 else:
                     print_red_message(f"contactbook empty")
                     log(f"contactbook empty")
@@ -699,7 +764,8 @@ class BotContactbook:
                 if self.contactbook:
                     all_contacts = []
                     for item in self.contactbook:
-                        all_contacts.append(item["firstname"] + " " + item["lastname"])
+                        all_contacts.append(
+                            item["firstname"] + " " + item["lastname"])
                     print_all_name_contacts(all_contacts)
                     print_green_message("enter the firstname to delete")
                     firstname = input(Fore.BLUE + ">>>: ")
@@ -707,11 +773,13 @@ class BotContactbook:
                     lastname = input(Fore.BLUE + ">>>: ")
                     if firstname + " " + lastname in all_contacts:
                         self.contactbook.delete(firstname, lastname)
-                        print_red_message(f"contact '{firstname} {lastname}' deleted")
+                        print_red_message(
+                            f"contact '{firstname} {lastname}' deleted")
                         log(f"contact '{firstname} {lastname}' deleted")
                     else:
                         log(f"contact '{firstname} {lastname}' not found")
-                        print_red_message(f"contact '{firstname} {lastname}' not found")
+                        print_red_message(
+                            f"contact '{firstname} {lastname}' not found")
                 else:
                     print_red_message(f"contactbook empty")
                     log(f"contactbook empty")
@@ -719,7 +787,8 @@ class BotContactbook:
             elif command == "8":
                 if self.contactbook:
                     while True:
-                        print_yellow_message("are you sure for delete all? (y/n)")
+                        print_yellow_message(
+                            "are you sure for delete all? (y/n)")
                         clear_all = input(Fore.BLUE + ">>>: ")
                         if clear_all == "y":
                             self.contactbook.clear_contactbook()
@@ -817,7 +886,8 @@ class NoteBook(UserList):
         return result
 
     def __setitem__(self, key, value):
-        self.data[key] = {"title": value.title, "note": value.note, "tag": value.tag}
+        self.data[key] = {"title": value.title,
+                          "note": value.note, "tag": value.tag}
 
     def __getitem__(self, key):
         return self.data[key]
@@ -851,7 +921,8 @@ class NoteBook(UserList):
     def delete(self, note: str):
         for key in self.data:
             if key["title"] == note:
-                print_yellow_message(f"are you sure for delete '{note}' note? (y/n)")
+                print_yellow_message(
+                    f"are you sure for delete '{note}' note? (y/n)")
                 del_note = input(Fore.BLUE + ">>>: ")
                 if del_note == "y":
                     self.data.remove(key)
@@ -959,7 +1030,8 @@ class BotNotebook:
                             print_green_message("number of note per page")
                             n = int(input(Fore.BLUE + ">>>:"))
                         except ValueError:
-                            print_red_message(f"incorrect number of note, try again")
+                            print_red_message(
+                                f"incorrect number of note, try again")
                             log(f"incorrect number of page, try again")
                             continue
 
@@ -978,7 +1050,8 @@ class BotNotebook:
                     if self.notebook:
                         for item in self.notebook:
                             if title == item["title"]:
-                                print_red_message(f"title '{title}' already exists")
+                                print_red_message(
+                                    f"title '{title}' already exists")
                                 log(f"title '{title}' already exists")
                                 break
                         else:
@@ -1083,7 +1156,8 @@ class BotNotebook:
             elif command == "7":
                 if self.notebook:
                     while True:
-                        print_yellow_message("are you sure for delete all? (y/n)")
+                        print_yellow_message(
+                            "are you sure for delete all? (y/n)")
                         clear_all = input(Fore.BLUE + ">>>:")
                         if clear_all == "y":
                             self.notebook.clear_notebook()
@@ -1329,7 +1403,8 @@ def calculate():
                 input(Fore.YELLOW + "press Enter to continue")
                 continue
             except ZeroDivisionError:
-                print_red_message("incorrect operating division by zero, try again!")
+                print_red_message(
+                    "incorrect operating division by zero, try again!")
                 input(Fore.YELLOW + "< press Enter to continue >")
                 continue
             except:

@@ -1,3 +1,5 @@
+__author__ = "VadimTrubay"
+
 from time import sleep
 from typing import List, Dict
 

@@ -1,3 +1,5 @@
+__author__ = "VadimTrubay"
+
 from datetime import datetime
 
 
