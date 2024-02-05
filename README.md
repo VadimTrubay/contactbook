@@ -1,6 +1,6 @@
-# "contactbook"
+# 'contactbook'
 
-# "contactbook" personal console assistant can:
+# 'contactbook' personal console assistant can:
 * save contacts with names, addresses, phone numbers, email and birthdays to the contacts book;
 * display a list of contacts whose birthday is a specified number of days from the current date;
 * check the correctness of the entered phone number and email when creating or editing a record and
@@ -15,9 +15,9 @@
 * sort files in the specified folder by category (images, documents, videos, etc.);
 * perform arithmetic operations using the calculator installed in the package;.
 
-# install package from "https://pypi.org/"
-* run the pip install "contactbook" command in the console
-* after installation, the "contactbook" package appears in the system;
+# install package from https://pypi.org/
+* 'pip install contactbook' run the command in the console
+* after installation, the 'contactbook' package appears in the system;
 * when the package is installed in the system, the script can be called anywhere from the console 
 * with the "contactbook" command;
 
@@ -27,4 +27,4 @@
 * in the folder where the project is located;
 * after installation, the contactbook package appears in the system;
 * when the package is installed in the system, the script can be called anywhere 
-* from the console with the "contactbook" command;
+* from the console with the 'contactbook' command;
